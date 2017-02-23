@@ -41,8 +41,9 @@ namespace VideoHashCode
 
         public bool AddVideo(Video vid)
         {
-            if(CurrentCapacity + vid.size <= capacity)
+            if(CurrentCapacity + vid.size <= capacity && !cachedVideos.Contains(vid))
             {
+
                 cachedVideos.Add(vid);
                 return true;
             }
