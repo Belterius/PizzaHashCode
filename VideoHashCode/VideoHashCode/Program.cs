@@ -28,7 +28,7 @@ namespace VideoHashCode
 
             // File to read
             string startupPath = Environment.CurrentDirectory;
-            reader = new StreamReader(@"C:\Users\belterius\Source\Repos\PizzaHashCode\VideoHashCode\VideoHashCode\Examples\me_at_the_zoo.in");
+            reader = new StreamReader(startupPath + "\\me_at_the_zoo.in");
 
             // First line : General Parameters
             line = reader.ReadLine();
@@ -49,6 +49,8 @@ namespace VideoHashCode
             // Second line : Videos
             line = reader.ReadLine();
             inputParameter = line.Split(' ');
+
+            i = 0;
             foreach(string size in inputParameter) {
                 listVideos.Add(new Video(i++, Convert.ToInt32(size)));
             }
@@ -101,11 +103,29 @@ namespace VideoHashCode
             }
             //////////////////////////////////////////
 
-            foreach(Cache cacheServer in listCaches)
-            {
+            // Parsing out
+            int nUsedCache = 0;
+            foreach (Cache cacheServer in listCaches) {
+                if (cacheServer.CurrentCapacity != 0) {
+                    nUsedCache++;
+                }
             }
 
-            Console.ReadLine();
+            using (StreamWriter outputFile = new StreamWriter(startupPath + "\\me_at_the_zoo.out")) {
+                outputFile.WriteLine(nUsedCache);
+                foreach(Cache cacheServer in listCaches) {
+                    if (cacheServer.CurrentCapacity != 0) {
+                        outputFile.Write(cacheServer.cacheID);
+                        foreach(Video video in cacheServer.cachedVideos) {
+                            outputFile.Write(" " + video.videoID);
+                        }
+
+                        outputFile.WriteLine("");
+                    }
+                }
+            }
+
+            //Console.ReadLine();
         }
     }
 }
