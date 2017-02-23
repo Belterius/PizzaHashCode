@@ -39,15 +39,27 @@ namespace VideoHashCode
             cachedVideos = new List<Video>();
         }
 
-        public bool AddVideo(Video vid)
+        public bool AddVideo(Request req)
         {
-            if(CurrentCapacity + vid.size <= capacity && !cachedVideos.Contains(vid))
+            if(CurrentCapacity + req.video.size <= capacity && !cachedVideos.Contains(req.video) && !videoInOtherCache(req))
             {
 
-                cachedVideos.Add(vid);
+                cachedVideos.Add(req.video);
                 return true;
             }
                 return false;
+        }
+
+        public bool videoInOtherCache(Request req)
+        {
+            foreach (var linkedcache in req.client.linkedCache)
+            {
+               if(linkedcache.Key.cachedVideos.Contains(req.video))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
