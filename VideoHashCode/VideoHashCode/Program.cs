@@ -11,6 +11,8 @@ namespace VideoHashCode
     {
         static void Main(string[] args)
         {
+            string filename = "kittens";
+
             StreamReader reader;
             string line;
             string[] inputParameter;
@@ -28,7 +30,7 @@ namespace VideoHashCode
 
             // File to read
             string startupPath = Environment.CurrentDirectory;
-            reader = new StreamReader(startupPath + "\\me_at_the_zoo.in");
+            reader = new StreamReader(startupPath + "\\" + filename + ".in");
 
             // First line : General Parameters
             line = reader.ReadLine();
@@ -111,7 +113,7 @@ namespace VideoHashCode
                 }
             }
 
-            using (StreamWriter outputFile = new StreamWriter(startupPath + "\\me_at_the_zoo.out")) {
+            using (StreamWriter outputFile = new StreamWriter(startupPath + "\\" + filename + ".out")) {
                 outputFile.WriteLine(nUsedCache);
                 foreach(Cache cacheServer in listCaches) {
                     if (cacheServer.CurrentCapacity != 0) {
