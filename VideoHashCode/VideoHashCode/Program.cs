@@ -12,45 +12,79 @@ namespace VideoHashCode
         static void Main(string[] args)
         {
             StreamReader reader;
-            int minIngredient;
-            int maxIngredient;
-            int numberOfColumns;
-            int numberOfRows;
-
-            String[] pizzaInput;
-
-            reader = new StreamReader(@"c:\users\belterius\documents\visual studio 2015\Projects\PizzaHashCode\PizzaHashCode\Example\small.in");
             string line;
+            string[] inputParameter;
+
+            int nVideos;
+            int nEndpoints;
+            int nRequestDescriptions;
+            int nCaches;
+            int sizeCaches;
+
+            List<Cache> listCaches = new List<Cache>();
+            List<Client> listClients = new List<Client>();
+            List<Request> listRequests = new List<Request>();
+            List<Video> listVideos = new List<Video>();
+
+            // File to read
+            string startupPath = Environment.CurrentDirectory;
+            reader = new StreamReader(startupPath + "\\me_at_the_zoo.in");
+
+            // First line : General Parameters
             line = reader.ReadLine();
-            string[] inputParameter = line.Split(' ');
-            numberOfRows = Convert.ToInt32(inputParameter[0]);
-            numberOfColumns = Convert.ToInt32(inputParameter[1]);
-            minIngredient = Convert.ToInt32(inputParameter[2]);
-            maxIngredient = Convert.ToInt32(inputParameter[3]);
+            inputParameter = line.Split(' ');
 
-            pizzaInput = new String[numberOfRows];
-            int i = 0;
-            while ((line = reader.ReadLine()) != null)
-            {
-                pizzaInput[i] = line;
-                i++;
-                Console.WriteLine(line);
+            nVideos = Convert.ToInt32(inputParameter[0]);
+            nEndpoints = Convert.ToInt32(inputParameter[1]);
+            nRequestDescriptions = Convert.ToInt32(inputParameter[2]);
+            nCaches = Convert.ToInt32(inputParameter[3]);
+            sizeCaches = Convert.ToInt32(inputParameter[4]);
+
+            // Creating cache servers
+            int i = 0, j = 0;
+            for (i = 0; i < nCaches; i++) {
+                listCaches.Add(new Cache(i, sizeCaches));
             }
 
-            using (StreamWriter outputFile = new StreamWriter(@"c:\users\belterius\documents\visual studio 2015\Projects\PizzaHashCode\PizzaHashCode\Example\small.out"))
-            {
-                //for (int j = 0; j < numberOfRows; j++)
-                //{
-
-                //    outputFile.WriteLine("Lignes   Tomates : " + myPizza.TomatoesInRow(j) + " Champignons : " + myPizza.MushroomInRow(j));
-                //    Console.WriteLine("Lignes   Tomates : " + myPizza.TomatoesInRow(j) + " Champignons : " + myPizza.MushroomInRow(j));
-                //}
-                //for (int j = 0; j < numberOfColumns; j++)
-                //{
-                //    outputFile.WriteLine("Colonne Tomates : " + myPizza.TomatoesInColumn(j) + " Champignons : " + myPizza.MushroomInColumn(j));
-                //    Console.WriteLine("Colonne Tomates : " + myPizza.TomatoesInColumn(j) + " Champignons : " + myPizza.MushroomInColumn(j));
-                //}
+            // Second line : Videos
+            line = reader.ReadLine();
+            inputParameter = line.Split(' ');
+            foreach(string size in inputParameter) {
+                listVideos.Add(new Video(i++, Convert.ToInt32(size)));
             }
+
+            // Loop Endpoints
+            for(i = 0; i < nEndpoints; i++) {
+                line = reader.ReadLine();
+                inputParameter = line.Split(' ');
+
+                int nCacheServers = Convert.ToInt32(inputParameter[1]);
+                Client client = new Client(i, Convert.ToInt32(inputParameter[0]));
+
+                // Cache servers
+                for(j = 0; j < nCacheServers; j++) {
+                    line = reader.ReadLine();
+                    inputParameter = line.Split(' ');
+
+                    int idCache = Convert.ToInt32(inputParameter[0]);
+                    int latency = Convert.ToInt32(inputParameter[1]);
+
+                    client.linkedCache.Add(listCaches[idCache], latency);
+                }
+
+                listClients.Add(client);
+            }
+
+            // Loop requests
+            for(i = 0; i < nRequestDescriptions; i++) {
+                line = reader.ReadLine();
+                inputParameter = line.Split(' ');
+                
+                listRequests.Add(new Request(i, listVideos[Convert.ToInt32(inputParameter[0])], listClients[Convert.ToInt32(inputParameter[1])], Convert.ToInt32(inputParameter[2])));
+            }
+
+            ///////////////////////////////////////////
+
 
             Console.ReadLine();
         }

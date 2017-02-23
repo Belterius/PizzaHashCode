@@ -8,7 +8,7 @@ namespace VideoHashCode
 {
     public class Request
     {
-        public int videoID { get; }
+        public int requestID { get; }
         public Video video { set; get; }
         public Client client { set; get; }
         public int score { get; set; }
@@ -16,11 +16,11 @@ namespace VideoHashCode
 
         public Request(int videoID)
         {
-            this.videoID = videoID;
+            this.requestID = videoID;
         }
         public Request(int videoID, Video myVideo, Client myClient, int myNumberOfRequest)
         {
-            this.videoID = videoID;
+            this.requestID = videoID;
             video = myVideo;
             client = myClient;
             numberOfRequest = myNumberOfRequest;
