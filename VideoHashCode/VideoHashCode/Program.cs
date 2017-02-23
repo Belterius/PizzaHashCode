@@ -11,7 +11,7 @@ namespace VideoHashCode
     {
         static void Main(string[] args)
         {
-            string filename = @"C:\Users\belterius\Source\Repos\PizzaHashCode\VideoHashCode\VideoHashCode\Examples\trending_today.in";
+            string filename =  Environment.CurrentDirectory + "\\" + "trending_today";
 
             StreamReader reader;
             string line;
@@ -30,7 +30,7 @@ namespace VideoHashCode
 
             // File to read
             string startupPath = Environment.CurrentDirectory;
-            reader = new StreamReader(filename);
+            reader = new StreamReader(filename + ".in");
 
             // First line : General Parameters
             line = reader.ReadLine();
@@ -113,7 +113,7 @@ namespace VideoHashCode
                 }
             }
 
-            using (StreamWriter outputFile = new StreamWriter(filename)) {
+            using (StreamWriter outputFile = new StreamWriter(filename + ".out")) {
                 outputFile.WriteLine(nUsedCache);
                 foreach(Cache cacheServer in listCaches) {
                     if (cacheServer.CurrentCapacity != 0) {
