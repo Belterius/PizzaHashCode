@@ -8,9 +8,24 @@ namespace VideoHashCode
 {
     public class Cache
     {
-        int cacheID { get; set; }
-        int capacity { get; set; }
-        List<Video> cachedVideos;
+        public int cacheID { get; set; }
+        public int capacity { get; set; }
+
+        public int CurrentCapacity
+        {
+            get
+            {
+                int total = 0;
+                foreach (Video vid in cachedVideos)
+                {
+                    total += vid.size;
+                }
+                return total;
+            }
+            
+        }
+        
+        public List<Video> cachedVideos;
 
         public Cache(int cacheID)
         {
@@ -21,6 +36,16 @@ namespace VideoHashCode
         {
             this.cacheID = cacheID;
             this.capacity = capacity;
+        }
+
+        public bool AddVideo(Video vid)
+        {
+            if(CurrentCapacity + vid.size <= capacity)
+            {
+                cachedVideos.Add(vid);
+                return true;
+            }
+                return false;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace VideoHashCode
 
             // File to read
             string startupPath = Environment.CurrentDirectory;
-            reader = new StreamReader(startupPath + "\\me_at_the_zoo.in");
+            reader = new StreamReader(@"C:\Users\belterius\Source\Repos\PizzaHashCode\VideoHashCode\VideoHashCode\Examples\me_at_the_zoo.in");
 
             // First line : General Parameters
             line = reader.ReadLine();
@@ -84,7 +84,24 @@ namespace VideoHashCode
             }
 
             ///////////////////////////////////////////
+            List<Score> requestScore = new List<Score>();
+            foreach (Request req in listRequests)
+            {
+                req.calculateScore();
+                foreach(Score score in req.listScore)
+                {
+                    requestScore.Add(score);
+                }
+            }
+            List<Score> sortedScore = requestScore.OrderBy(x => x.value).ToList();
 
+
+
+            //////////////////////////////////////////
+
+            foreach(Cache cacheServer in listCaches)
+            {
+            }
 
             Console.ReadLine();
         }
