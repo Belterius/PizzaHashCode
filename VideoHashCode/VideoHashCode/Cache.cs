@@ -36,6 +36,7 @@ namespace VideoHashCode
         {
             this.cacheID = cacheID;
             this.capacity = capacity;
+            cachedVideos = new List<Video>();
         }
 
         public bool AddVideo(Video vid)

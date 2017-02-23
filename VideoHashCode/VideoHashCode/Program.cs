@@ -95,8 +95,10 @@ namespace VideoHashCode
             }
             List<Score> sortedScore = requestScore.OrderBy(x => x.value).ToList();
 
-
-
+            foreach(Score score in sortedScore)
+            {
+                score.cache.AddVideo(score.request.video);
+            }
             //////////////////////////////////////////
 
             foreach(Cache cacheServer in listCaches)
