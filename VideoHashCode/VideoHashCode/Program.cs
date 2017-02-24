@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,39 @@ namespace VideoHashCode
 {
     class Program
     {
+        public static string Reverse(string s) {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
         static void Main(string[] args)
         {
-            string filename =  Environment.CurrentDirectory + "\\" + "trending_today";
+            switch(args.Length) {
+                case 0:
+                    Console.WriteLine("Please, pass an input file as a parameter");
+                    Console.ReadLine();
+                    return;
+
+                case 1: break;
+
+                default:
+                    Console.WriteLine("Please, pass only one file");
+                    Console.ReadLine();
+                    return;
+            }
+
+            FileAttributes file_attr = File.GetAttributes(args[0]);
+            if (file_attr.HasFlag(FileAttributes.Directory)) {
+                Console.WriteLine("Please, pass a file not a directory");
+                Console.ReadLine();
+                return;
+            }
+
+            Directory.CreateDirectory(Environment.CurrentDirectory + "\\out");
+
+            string file_in = args[0];
+            string file_out = Environment.CurrentDirectory + "\\out\\" + Reverse(Reverse(file_in).Split('.')[1].Split('\\')[0]) + ".out";
 
             StreamReader reader;
             string line;
@@ -30,7 +61,7 @@ namespace VideoHashCode
 
             // File to read
             string startupPath = Environment.CurrentDirectory;
-            reader = new StreamReader(filename + ".in");
+            reader = new StreamReader(file_in);
 
             // First line : General Parameters
             line = reader.ReadLine();
@@ -113,7 +144,7 @@ namespace VideoHashCode
                 }
             }
 
-            using (StreamWriter outputFile = new StreamWriter(filename + ".out")) {
+            using (StreamWriter outputFile = new StreamWriter(file_out)) {
                 outputFile.WriteLine(nUsedCache);
                 foreach(Cache cacheServer in listCaches) {
                     if (cacheServer.CurrentCapacity != 0) {
