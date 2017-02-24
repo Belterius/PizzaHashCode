@@ -128,7 +128,7 @@ namespace VideoHashCode
                     requestScore.Add(score);
                 }
             }
-            List<Score> sortedScore = requestScore.OrderBy(x => x.value).ToList();
+            List<Score> sortedScore = requestScore.OrderBy(x => x.value).Reverse().ToList();
 
             foreach(Score score in sortedScore)
             {
